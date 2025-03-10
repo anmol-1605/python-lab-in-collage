@@ -1,0 +1,30 @@
+# Correct list definition
+my_list = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print(my_list)
+
+# Correct length calculation
+length = len(my_list)
+print("Length of the list:", length)
+
+# Correct list concatenation
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]  # list2 was not defined in your code
+concatenated_list = list1 + list2
+print(concatenated_list)
+
+# Correct membership operators
+print(2 in list1)  # True
+print(3 not in list2)  # False
+
+# Correct for loop indentation
+for i in list1:
+    print(i)
+
+# Correct index lookup
+fruits = ['apple', 'banana', 'cherry']
+x = fruits.index('apple')
+print(x)  # Output: 0
+
+# Correct slicing and list name
+my_list2 = [50, 70, 30, 20, 90, 10, 50]
+print(my_list2[1:5])  # Output: [70, 30, 20, 90]
