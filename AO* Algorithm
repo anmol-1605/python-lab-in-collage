@@ -1,0 +1,68 @@
+def cost(H, condition, weight=1):
+    cost = {}
+    
+    if 'AND' in condition:
+        AND_nodes = condition['AND']
+        PathA = sum(H[node] + weight for node in AND_nodes)
+        cost['PathA'] = PathA
+
+    if 'OR' in condition:
+        OR_nodes = condition['OR']
+        Path_B = min(H[node] + weight for node in OR_nodes)
+        cost['Path_B'] = Path_B
+    
+    return cost
+
+def update_cost(H, conditions, weight=1):
+    Main_nodes = list(conditions.keys())
+    Main_nodes.reverse()
+    least_cost = {}
+
+    for key in Main_nodes:
+        condition = conditions[key]
+        print(key, '.', conditions[key], '>>>', cost(H, condition, weight))
+        
+        c = cost(H, condition, weight)
+        H[key] = min(c.values())
+        least_cost[key] = c
+    
+    return least_cost
+
+def shortest_path(Start, updated_costH):
+    Path = Start
+    
+    if Start in updated_costH.keys():
+        Min_cost = min(updated_costH[Start].values())
+        key = list(updated_costH[Start].keys())
+        index = list(updated_costH[Start].values()).index(Min_cost)
+        Next = key[index].split()
+
+        if len(Next) == 1:
+            Start = Next[0]
+            Path += '<--' + shortest_path(Start, updated_costH)
+        else:
+            Path += '<--(' + key[index] + ')'
+            Start = Next[0]
+            Path += '<--' + shortest_path(Start, updated_costH)
+    
+    return Path
+
+# Heuristic values
+H = {'A': -1, 'B': 5, 'C': 2, 'D': 4, 'E': 7, 'F': 9, 'G': 3, 'H': 0, 'I': 0, 'J': 0}
+
+# Conditions for AND/OR paths
+conditions = {
+    'A': {'OR': ['B'], 'AND': ['C', 'D']},
+    'B': {'OR': ['E', 'F']},
+    'C': {'OR': ['G'], 'AND': ['H', 'I']},
+    'D': {'OR': ['J']}
+}
+
+# Update the cost
+print("Updated Cost:")
+updated_cost = update_cost(H, conditions, weight=1)
+print(updated_cost)
+
+# Find the shortest path from 'A'
+print("\nShortest Path:")
+print(shortest_path('A', updated_cost))
